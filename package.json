@@ -1,0 +1,41 @@
+{
+  "name": "flag-selector",
+  "version": "2.0.0",
+  "description": "A high-performance country flag selector component with lightweight mode and intelligent IP detection",
+  "main": "src/flag-selector.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "flag",
+    "selector",
+    "country",
+    "dropdown",
+    "component",
+    "vanilla-js",
+    "javascript",
+    "lightweight",
+    "responsive",
+    "mobile",
+    "desktop"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/flag-selector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/flag-selector/issues"
+  },
+  "homepage": "https://github.com/yourusername/flag-selector#readme",
+  "files": [
+    "src/",
+    "examples/",
+    "docs/",
+    "README.md",
+    "LICENSE"
+  ]
+}

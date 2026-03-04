@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flag Selector Component Demo</title>
+    <link rel="stylesheet" href="../src/flag-selector.css">
+    <link rel="stylesheet" href="../src/flag-selector-pc.css">
+    <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚩 Flag Selector</h1>
+            <p>高性能国旗选择器组件 - 支持轻量级模式和完整选择模式</p>
+        </header>
+
+        <div class="demo-section">
+            <h2 class="demo-title">基础示例 - 轻量级模式</h2>
+            <div class="demo-content">
+                <div class="flag-placeholder" title="点击选择国家"></div>
+                <div class="info-box">
+                    <h4>当前选择</h4>
+                    <p id="selectedInfo">未选择国家</p>
+                </div>
+                <div class="button-group">
+                    <button class="primary" onclick="resetSelection()">重置选择</button>
+                    <button class="secondary" onclick="setRandomCountry()">随机选择</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2 class="demo-title">功能特性</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">轻量级模式</div>
+                    <div class="feature-desc">只加载基础国家数据，按需加载完整列表</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <div class="feature-title">智能检测</div>
+                    <div class="feature-desc">基于IP自动检测用户所在国家</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <div class="feature-title">搜索功能</div>
+                    <div class="feature-desc">支持中英文国家名搜索</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">响应式设计</div>
+                    <div class="feature-desc">完美适配移动端和桌面端</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <div class="feature-title">本地存储</div>
+                    <div class="feature-desc">自动保存用户选择</div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <div class="feature-title">样式定制</div>
+                    <div class="feature-desc">支持自定义样式和主题</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2 class="demo-title">快速开始</h2>
+            <div class="info-box">
+                <h4>1. 引入文件</h4>
+                <pre style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 14px;">
+&lt;!-- 样式文件 --&gt;
+&lt;link rel="stylesheet" href="src/flag-selector.css"&gt;
+&lt;link rel="stylesheet" href="src/flag-selector-pc.css"&gt;
+
+&lt;!-- 完整国家数据 --&gt;
+&lt;script src="src/countries-data.js"&gt;&lt;/script&gt;
+
+&lt;!-- 主组件文件 --&gt;
+&lt;script src="src/flag-selector.js"&gt;&lt;/script&gt;</pre>
+
+                <h4 style="margin-top: 20px;">2. HTML 结构</h4>
+                <pre style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 14px;">
+&lt;div class="flag-placeholder" title="点击选择国家"&gt;&lt;/div&gt;</pre>
+
+                <h4 style="margin-top: 20px;">3. 初始化组件</h4>
+                <pre style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; overflow-x: auto; font-size: 14px;">
+const flagDisplay = initFlagSelector({
+    containerSelector: '.flag-placeholder',
+    onSelect: function(selectedCountry) {
+        console.log('选择的国家:', selectedCountry);
+        // 处理国家选择逻辑
+    }
+});</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入组件文件 -->
+    <script src="../src/countries-data.js"></script>
+    <script src="../src/flag-selector.js"></script>
+
+    <script>
+        // 初始化组件
+        const flagDisplay = initFlagSelector({
+            containerSelector: '.flag-placeholder',
+            onSelect: function(selectedCountry) {
+                console.log('选择的国家:', selectedCountry);
+                updateSelectedInfo(selectedCountry);
+            }
+        });
+
+        // 更新显示信息
+        function updateSelectedInfo(country) {
+            const infoEl = document.getElementById('selectedInfo');
+            if (country) {
+                infoEl.innerHTML = `
+                    <strong>${country.flag} ${country.name}</strong><br>
+                    <span style="color: #666;">
+                        代码: <code>${country.code}</code> | 
+                        英文名: ${country.nameEn} | 
+                        大洲: ${country.continent}
+                    </span>
+                `;
+            }
+        }
+
+        // 重置选择
+        function resetSelection() {
+            localStorage.removeItem('flagSelector_manualSelection');
+            location.reload();
+        }
+
+        // 随机选择国家
+        function setRandomCountry() {
+            const countries = window.COUNTRIES_DATA;
+            const randomIndex = Math.floor(Math.random() * countries.length);
+            const randomCountry = countries[randomIndex];
+            
+            if (flagDisplay) {
+                flagDisplay.setSelectedCountry(randomCountry.code, false);
+                updateSelectedInfo(randomCountry);
+            }
+        }
+
+        // 监听国家选择
+        if (flagDisplay) {
+            // 等待组件初始化完成
+            setTimeout(() => {
+                const selected = flagDisplay.getSelectedCountry();
+                if (selected) {
+                    updateSelectedInfo(selected);
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
